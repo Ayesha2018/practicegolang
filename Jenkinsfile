@@ -24,7 +24,18 @@ pipeline {
             }
         }
 
-       
+        stage('Test') {
+            steps {
+                withEnv(["PATH+GO=${GOPATH}/bin"]){
+                    echo 'Running vetting'
+                    sh 'go vet /var/jenkins_home/workspace/demo2/'
+                    echo 'Running linting'
+                    sh 'golint /var/jenkins_home/workspace/demo2/'
+                    echo 'Running test'
+                    sh 'go test -v'
+                }
+            }
+        }
         
     }    
 }
