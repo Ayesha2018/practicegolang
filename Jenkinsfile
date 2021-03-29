@@ -1,12 +1,12 @@
 pipeline {
     agent any
     tools {
-        go 'go 1.16.2'
+        go 'go 1.15.6'
     }
     environment {
         GO114MODULE = 'on'
         CGO_ENABLED = 0 
-        GOPATH = "build /var/jenkins_home/workspace/demo2"
+        GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
     }
     stages {        
         stage('Pre Test') {
@@ -20,22 +20,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling and building'
-                sh 'go main.go'
+                sh 'go build /var/jenkins_home/workspace/demo2'
             }
         }
 
-        stage('Test') {
-            steps {
-                withEnv(["PATH+GO=${GOPATH}/bin"]){
-                    echo 'Running vetting'
-                    sh 'go vet .'
-                    echo 'Running linting'
-                    sh 'golint .'
-                    echo 'Running test'
-                    sh 'go test -v'
-                }
-            }
-        }
+   
         
     }    
 }
