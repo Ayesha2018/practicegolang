@@ -27,8 +27,11 @@ pipeline {
    
 		stage('Test') {
 			steps {
-			echo 'Running vetting'
-                    sh 'go vet /var/jenkins_home/workspace/demo2/main.go'
+				echo 'Running vetting'
+				sh 'go vet /var/jenkins_home/workspace/demo2/main.go'
+				
+				echo 'Running linting'
+				sh 'golint /var/jenkins_home/workspace/demo2/main.go'
 			}
 		}
         
